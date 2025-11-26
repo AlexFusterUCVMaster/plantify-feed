@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import PlantCard from "@/components/PlantCard";
+import ParticleBackground from "@/components/ParticleBackground";
 import plant1 from "@/assets/plant1.jpg";
 import plant2 from "@/assets/plant2.jpg";
 import plant3 from "@/assets/plant3.jpg";
@@ -73,6 +74,7 @@ const mockPlants = [
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <ParticleBackground />
       <Header />
       
       <main className="container mx-auto px-4 py-8">
