@@ -82,6 +82,9 @@ const PlantCard = ({
             <span className="text-accent font-medium">{plantName}</span>
           </p>
           <p className="text-sm text-muted-foreground">{description}</p>
+          <button className="text-sm text-primary mt-1 hover:text-accent transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(180_100%_50%)]">
+            ver más
+          </button>
         </div>
 
         {comments > 0 && <button className="text-sm text-tertiary mt-2 hover:text-secondary transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(270_100%_60%)]">
