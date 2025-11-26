@@ -3,7 +3,9 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 interface PlantCardProps {
+  id: string;
   image: string;
   plantName: string;
   description: string;
@@ -13,6 +15,7 @@ interface PlantCardProps {
   comments: number;
 }
 const PlantCard = ({
+  id,
   image,
   plantName,
   description,
@@ -82,14 +85,20 @@ const PlantCard = ({
             <span className="text-accent font-medium">{plantName}</span>
           </p>
           <p className="text-sm text-muted-foreground">{description}</p>
-          <button className="text-sm text-primary mt-1 hover:text-accent transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(180_100%_50%)]">
+          <Link 
+            to={`/post/${id}`}
+            className="text-sm text-primary mt-1 hover:text-accent transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(180_100%_50%)] inline-block"
+          >
             ver más
-          </button>
+          </Link>
         </div>
 
-        {comments > 0 && <button className="text-sm text-tertiary mt-2 hover:text-secondary transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(270_100%_60%)]">
+        {comments > 0 && <Link 
+          to={`/post/${id}`}
+          className="text-sm text-tertiary mt-2 hover:text-secondary transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(270_100%_60%)] inline-block"
+        >
             VER LOS {comments} COMENTARIOS
-          </button>}
+          </Link>}
       </div>
     </Card>;
 };
