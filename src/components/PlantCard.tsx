@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-
 interface PlantCardProps {
   image: string;
   plantName: string;
@@ -13,7 +12,6 @@ interface PlantCardProps {
   likes: number;
   comments: number;
 }
-
 const PlantCard = ({
   image,
   plantName,
@@ -21,11 +19,10 @@ const PlantCard = ({
   userName,
   userInitials,
   likes: initialLikes,
-  comments,
+  comments
 }: PlantCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(initialLikes);
-
   const handleLike = () => {
     if (isLiked) {
       setLikes(likes - 1);
@@ -34,9 +31,7 @@ const PlantCard = ({
     }
     setIsLiked(!isLiked);
   };
-
-  return (
-    <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg border-border bg-card">
+  return <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg border-border bg-card">
       <div className="p-4 flex items-center gap-3 border-b border-border">
         <Avatar className="h-10 w-10 border-2 border-primary/20">
           <AvatarFallback className="bg-secondary text-foreground font-medium">
@@ -50,27 +45,14 @@ const PlantCard = ({
       </div>
 
       <div className="aspect-square overflow-hidden bg-muted">
-        <img
-          src={image}
-          alt={plantName}
-          className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-        />
+        <img src={image} alt={plantName} className="h-full w-full object-cover transition-transform duration-300 hover:scale-105" />
       </div>
 
-      <div className="p-4">
+      <div className="p-4 bg-lime-200">
         <div className="flex items-center justify-between mb-3">
           <div className="flex gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-accent"
-              onClick={handleLike}
-            >
-              <Heart
-                className={`h-5 w-5 transition-colors ${
-                  isLiked ? "fill-accent text-accent" : "text-foreground"
-                }`}
-              />
+            <Button variant="ghost" size="icon" className="hover:bg-accent" onClick={handleLike}>
+              <Heart className={`h-5 w-5 transition-colors ${isLiked ? "fill-accent text-accent" : "text-foreground"}`} />
             </Button>
             <Button variant="ghost" size="icon" className="hover:bg-accent">
               <MessageCircle className="h-5 w-5 text-foreground" />
@@ -93,14 +75,10 @@ const PlantCard = ({
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
 
-        {comments > 0 && (
-          <button className="text-sm text-muted-foreground mt-2 hover:text-foreground transition-colors">
+        {comments > 0 && <button className="text-sm text-muted-foreground mt-2 hover:text-foreground transition-colors">
             Ver los {comments} comentarios
-          </button>
-        )}
+          </button>}
       </div>
-    </Card>
-  );
+    </Card>;
 };
-
 export default PlantCard;
