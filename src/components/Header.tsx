@@ -1,4 +1,6 @@
 import { Leaf } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 const Header = () => {
   return <header className="sticky top-0 z-50 w-full border-b-2 border-primary bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 neon-glow">
       <div className="container flex h-20 items-center justify-between px-4">
@@ -8,9 +10,14 @@ const Header = () => {
             Plantify
           </h1>
         </div>
-        <p className="text-sm text-secondary hidden sm:block animate-slide-up font-medium">
-          
-        </p>
+        <div className="flex items-center gap-3 animate-slide-up">
+          <Button variant="ghost" className="text-foreground hover:text-accent border border-primary/30 neon-text">
+            Login
+          </Button>
+          <Button className="bg-primary/20 text-accent border-2 border-accent hover:bg-accent/20 neon-glow">
+            Sign Up
+          </Button>
+        </div>
       </div>
     </header>;
 };
