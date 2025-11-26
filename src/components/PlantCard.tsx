@@ -50,7 +50,6 @@ const PlantCard = ({
           alt={plantName} 
           className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110" 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
 
       <div className="p-4 bg-card/50 backdrop-blur">
