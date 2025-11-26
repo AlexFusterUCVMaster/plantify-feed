@@ -9,7 +9,7 @@ import plant6 from "@/assets/plant6.jpg";
 
 const mockPlants = [
   {
-    id: 1,
+    id: "1",
     image: plant1,
     plantName: "Monstera Deliciosa",
     description: "Mi monstera está creciendo increíblemente bien este año. ¡Miren estas hojas nuevas! 🌱",
@@ -19,7 +19,7 @@ const mockPlants = [
     comments: 18,
   },
   {
-    id: 2,
+    id: "2",
     image: plant2,
     plantName: "Colección de Suculentas",
     description: "Mi colección de suculentas cada vez más grande. ¿Cuál es tu favorita?",
@@ -29,7 +29,7 @@ const mockPlants = [
     comments: 24,
   },
   {
-    id: 3,
+    id: "3",
     image: plant3,
     plantName: "Pothos Colgante",
     description: "¡Por fin encontré el lugar perfecto para mi pothos! Las enredaderas están hermosas.",
@@ -39,7 +39,7 @@ const mockPlants = [
     comments: 31,
   },
   {
-    id: 4,
+    id: "4",
     image: plant4,
     plantName: "Ficus Lyrata",
     description: "Mi ficus después de 6 meses de cuidados. ¡El esfuerzo vale la pena!",
@@ -49,7 +49,7 @@ const mockPlants = [
     comments: 45,
   },
   {
-    id: 5,
+    id: "5",
     image: plant5,
     plantName: "Familia de Cactus",
     description: "Mi estantería de cactus está completamente llena. Creo que necesito más espacio 🌵",
@@ -59,7 +59,7 @@ const mockPlants = [
     comments: 22,
   },
   {
-    id: 6,
+    id: "6",
     image: plant6,
     plantName: "Sansevieria",
     description: "La planta perfecta para principiantes. Resistente y hermosa.",
