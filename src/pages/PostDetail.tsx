@@ -15,11 +15,25 @@ const mockPosts = {
     userName: "PlantLover23",
     userInitials: "PL",
     likes: 234,
-    comments: [
-      { id: 1, userName: "GreenThumb", userInitials: "GT", text: "¡Qué hermosa! ¿Qué fertilizante usas?", time: "hace 1 hora" },
-      { id: 2, userName: "BotanicaFan", userInitials: "BF", text: "Las fenestras son perfectas 😍", time: "hace 2 horas" },
-      { id: 3, userName: "JungleVibes", userInitials: "JV", text: "Me encanta cómo la tienes ubicada", time: "hace 3 horas" }
-    ]
+    comments: [{
+      id: 1,
+      userName: "GreenThumb",
+      userInitials: "GT",
+      text: "¡Qué hermosa! ¿Qué fertilizante usas?",
+      time: "hace 1 hora"
+    }, {
+      id: 2,
+      userName: "BotanicaFan",
+      userInitials: "BF",
+      text: "Las fenestras son perfectas 😍",
+      time: "hace 2 horas"
+    }, {
+      id: 3,
+      userName: "JungleVibes",
+      userInitials: "JV",
+      text: "Me encanta cómo la tienes ubicada",
+      time: "hace 3 horas"
+    }]
   },
   "2": {
     image: "/src/assets/plant2.jpg",
@@ -28,10 +42,19 @@ const mockPosts = {
     userName: "GreenThumb",
     userInitials: "GT",
     likes: 189,
-    comments: [
-      { id: 1, userName: "PlantLover23", userInitials: "PL", text: "¡Impresionante! ¿Lo tienes en agua o tierra?", time: "hace 30 min" },
-      { id: 2, userName: "UrbanJungle", userInitials: "UJ", text: "Necesito consejos, el mío no crece tanto", time: "hace 1 hora" }
-    ]
+    comments: [{
+      id: 1,
+      userName: "PlantLover23",
+      userInitials: "PL",
+      text: "¡Impresionante! ¿Lo tienes en agua o tierra?",
+      time: "hace 30 min"
+    }, {
+      id: 2,
+      userName: "UrbanJungle",
+      userInitials: "UJ",
+      text: "Necesito consejos, el mío no crece tanto",
+      time: "hace 1 hora"
+    }]
   },
   "3": {
     image: "/src/assets/plant3.jpg",
@@ -40,9 +63,13 @@ const mockPosts = {
     userName: "UrbanJungle",
     userInitials: "UJ",
     likes: 156,
-    comments: [
-      { id: 1, userName: "BotanicaFan", userInitials: "BF", text: "Los ficus son tan temperamentales, felicidades", time: "hace 2 horas" }
-    ]
+    comments: [{
+      id: 1,
+      userName: "BotanicaFan",
+      userInitials: "BF",
+      text: "Los ficus son tan temperamentales, felicidades",
+      time: "hace 2 horas"
+    }]
   },
   "4": {
     image: "/src/assets/plant4.jpg",
@@ -51,10 +78,19 @@ const mockPosts = {
     userName: "SucculentQueen",
     userInitials: "SQ",
     likes: 201,
-    comments: [
-      { id: 1, userName: "DesertVibes", userInitials: "DV", text: "Las flores son espectaculares", time: "hace 4 horas" },
-      { id: 2, userName: "CactusLover", userInitials: "CL", text: "¿Cuánto tiempo tardó en florecer?", time: "hace 5 horas" }
-    ]
+    comments: [{
+      id: 1,
+      userName: "DesertVibes",
+      userInitials: "DV",
+      text: "Las flores son espectaculares",
+      time: "hace 4 horas"
+    }, {
+      id: 2,
+      userName: "CactusLover",
+      userInitials: "CL",
+      text: "¿Cuánto tiempo tardó en florecer?",
+      time: "hace 5 horas"
+    }]
   },
   "5": {
     image: "/src/assets/plant5.jpg",
@@ -72,19 +108,24 @@ const mockPosts = {
     userName: "PlantParent",
     userInitials: "PP",
     likes: 143,
-    comments: [
-      { id: 1, userName: "SwapPlants", userInitials: "SP", text: "¡Me interesa! Te escribo por mensaje", time: "hace 20 min" }
-    ]
+    comments: [{
+      id: 1,
+      userName: "SwapPlants",
+      userInitials: "SP",
+      text: "¡Me interesa! Te escribo por mensaje",
+      time: "hace 20 min"
+    }]
   }
 };
-
 const PostDetail = () => {
-  const { id } = useParams<{ id: string }>();
+  const {
+    id
+  } = useParams<{
+    id: string;
+  }>();
   const post = id ? mockPosts[id as keyof typeof mockPosts] : null;
-  
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(post?.likes || 0);
-
   const handleLike = () => {
     if (isLiked) {
       setLikes(likes - 1);
@@ -93,27 +134,19 @@ const PostDetail = () => {
     }
     setIsLiked(!isLiked);
   };
-
   if (!post) {
-    return (
-      <div className="min-h-screen bg-background">
+    return <div className="min-h-screen bg-background">
         <Header />
         <div className="container mx-auto px-4 py-8">
           <p className="text-center text-muted-foreground">Post no encontrado</p>
         </div>
-      </div>
-    );
+      </div>;
   }
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header />
       
       <div className="container mx-auto px-4 py-8 max-w-3xl">
-        <Link 
-          to="/" 
-          className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors mb-6 font-medium"
-        >
+        <Link to="/" className="inline-flex items-center gap-2 text-primary hover:text-accent transition-colors mb-6 font-medium">
           <ArrowLeft className="h-4 w-4" />
           Volver al feed
         </Link>
@@ -131,23 +164,14 @@ const PostDetail = () => {
             </div>
           </div>
 
-          <div className="aspect-square overflow-hidden bg-muted border-y-2 border-primary/20">
-            <img 
-              src={post.image} 
-              alt={post.plantName} 
-              className="h-full w-full object-cover" 
-            />
+          <div className="overflow-hidden bg-muted border-y-2 border-primary/20">
+            <img src={post.image} alt={post.plantName} className="h-full w-full object-cover" />
           </div>
 
           <div className="p-4 bg-card/50 backdrop-blur">
             <div className="flex items-center justify-between mb-3">
               <div className="flex gap-2">
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  className="hover:bg-accent/20 border border-accent/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(140_100%_50%)]" 
-                  onClick={handleLike}
-                >
+                <Button variant="ghost" size="icon" className="hover:bg-accent/20 border border-accent/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(140_100%_50%)]" onClick={handleLike}>
                   <Heart className={`h-5 w-5 transition-all duration-300 ${isLiked ? "fill-secondary text-secondary drop-shadow-[0_0_10px_hsl(320_100%_50%)]" : "text-accent"}`} />
                 </Button>
                 <Button variant="ghost" size="icon" className="hover:bg-primary/20 border border-primary/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(180_100%_50%)]">
@@ -177,14 +201,10 @@ const PostDetail = () => {
                 {post.comments.length} COMENTARIOS
               </h3>
               
-              {post.comments.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-4">
+              {post.comments.length === 0 ? <p className="text-sm text-muted-foreground text-center py-4">
                   No hay comentarios aún. ¡Sé el primero en comentar!
-                </p>
-              ) : (
-                <div className="space-y-4">
-                  {post.comments.map((comment) => (
-                    <div key={comment.id} className="flex gap-3">
+                </p> : <div className="space-y-4">
+                  {post.comments.map(comment => <div key={comment.id} className="flex gap-3">
                       <Avatar className="h-8 w-8 border border-primary/50">
                         <AvatarFallback className="bg-tertiary/50 text-tertiary-foreground text-xs font-bold">
                           {comment.userInitials}
@@ -197,16 +217,12 @@ const PostDetail = () => {
                         </p>
                         <p className="text-xs text-secondary mt-1">{comment.time}</p>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    </div>)}
+                </div>}
             </div>
           </div>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default PostDetail;
