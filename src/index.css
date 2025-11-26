@@ -8,81 +8,69 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Plantify Design System - Natural & Botanical */
-    --background: 35 30% 96%;
-    --foreground: 140 25% 20%;
+    /* Plantify Design System - Futuristic Neon */
+    --background: 220 25% 8%;
+    --foreground: 180 100% 85%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 140 25% 20%;
+    --card: 220 20% 12%;
+    --card-foreground: 180 100% 85%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 140 25% 20%;
+    --popover: 220 20% 12%;
+    --popover-foreground: 180 100% 85%;
 
-    /* Primary: Sage Green */
-    --primary: 110 25% 45%;
-    --primary-foreground: 0 0% 100%;
+    /* Primary: Neon Cyan */
+    --primary: 180 100% 50%;
+    --primary-foreground: 220 25% 8%;
 
-    /* Secondary: Soft Cream */
-    --secondary: 40 35% 92%;
-    --secondary-foreground: 140 25% 20%;
+    /* Secondary: Neon Magenta */
+    --secondary: 320 100% 50%;
+    --secondary-foreground: 220 25% 8%;
 
-    /* Muted: Light Sage */
-    --muted: 100 20% 90%;
-    --muted-foreground: 110 15% 40%;
+    /* Muted: Dark Gray Blue */
+    --muted: 220 15% 18%;
+    --muted-foreground: 180 20% 60%;
 
-    /* Accent: Terracotta Touch */
-    --accent: 20 50% 65%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent: Neon Green */
+    --accent: 140 100% 50%;
+    --accent-foreground: 220 25% 8%;
+
+    /* Tertiary: Neon Purple */
+    --tertiary: 270 100% 60%;
+    --tertiary-foreground: 220 25% 8%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 100 20% 85%;
-    --input: 100 20% 85%;
-    --ring: 110 25% 45%;
+    --border: 180 100% 50%;
+    --input: 220 15% 18%;
+    --ring: 180 100% 50%;
 
-    --radius: 0.75rem;
+    --radius: 0rem;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(110 25% 45%), hsl(120 30% 55%));
-    --gradient-subtle: linear-gradient(180deg, hsl(35 30% 96%), hsl(100 20% 94%));
+    /* Neon Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(180 100% 50%), hsl(270 100% 60%));
+    --gradient-secondary: linear-gradient(135deg, hsl(320 100% 50%), hsl(140 100% 50%));
+    --gradient-background: linear-gradient(180deg, hsl(220 25% 8%), hsl(220 20% 12%));
+    
+    /* Neon Glows */
+    --glow-cyan: 0 0 20px hsl(180 100% 50% / 0.5), 0 0 40px hsl(180 100% 50% / 0.3);
+    --glow-magenta: 0 0 20px hsl(320 100% 50% / 0.5), 0 0 40px hsl(320 100% 50% / 0.3);
+    --glow-green: 0 0 20px hsl(140 100% 50% / 0.5), 0 0 40px hsl(140 100% 50% / 0.3);
+    --glow-purple: 0 0 20px hsl(270 100% 60% / 0.5), 0 0 40px hsl(270 100% 60% / 0.3);
     
     /* Shadows */
-    --shadow-soft: 0 4px 20px -4px hsl(110 25% 45% / 0.1);
-    --shadow-card: 0 2px 12px -2px hsl(110 15% 40% / 0.08);
+    --shadow-neon: 0 0 10px hsl(180 100% 50% / 0.3), 0 4px 20px hsl(180 100% 50% / 0.2);
+    --shadow-card: 0 8px 32px hsl(180 100% 50% / 0.15), inset 0 1px 0 hsl(180 100% 50% / 0.1);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-glow: all 0.5s ease-in-out;
   }
 
   .dark {
-    --background: 140 20% 10%;
-    --foreground: 100 20% 90%;
-
-    --card: 140 18% 12%;
-    --card-foreground: 100 20% 90%;
-
-    --popover: 140 18% 12%;
-    --popover-foreground: 100 20% 90%;
-
-    --primary: 110 30% 55%;
-    --primary-foreground: 140 20% 10%;
-
-    --secondary: 140 15% 20%;
-    --secondary-foreground: 100 20% 90%;
-
-    --muted: 140 15% 18%;
-    --muted-foreground: 100 15% 60%;
-
-    --accent: 20 50% 60%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 140 15% 20%;
-    --input: 140 15% 20%;
-    --ring: 110 30% 55%;
+    /* Dark mode uses same neon colors */
+    --background: 220 25% 8%;
+    --foreground: 180 100% 85%;
   }
 }
 
@@ -93,5 +81,36 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background-image: 
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        hsl(220 20% 10%) 2px,
+        hsl(220 20% 10%) 4px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        hsl(220 20% 10%) 2px,
+        hsl(220 20% 10%) 4px
+      );
+    background-size: 50px 50px;
+  }
+}
+
+@layer utilities {
+  .neon-text {
+    text-shadow: var(--glow-cyan);
+  }
+  
+  .neon-border {
+    border: 1px solid hsl(var(--primary));
+    box-shadow: var(--glow-cyan);
+  }
+  
+  .neon-glow {
+    box-shadow: var(--shadow-neon);
   }
 }

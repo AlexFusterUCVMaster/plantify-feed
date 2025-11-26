@@ -31,52 +31,62 @@ const PlantCard = ({
     }
     setIsLiked(!isLiked);
   };
-  return <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg border-border bg-card rounded-none">
-      <div className="p-4 flex items-center gap-3 border-b border-border">
-        <Avatar className="h-10 w-10 border-2 border-primary/20">
-          <AvatarFallback className="bg-secondary text-foreground font-medium">
+  return <Card className="overflow-hidden transition-all duration-500 hover:scale-[1.02] border-2 border-primary bg-card rounded-none neon-border animate-slide-up group">
+      <div className="p-4 flex items-center gap-3 border-b-2 border-primary/30 bg-muted/30">
+        <Avatar className="h-10 w-10 border-2 border-primary animate-glow-pulse">
+          <AvatarFallback className="bg-tertiary text-tertiary-foreground font-bold">
             {userInitials}
           </AvatarFallback>
         </Avatar>
         <div>
-          <p className="font-semibold text-foreground">{userName}</p>
-          <p className="text-xs text-muted-foreground">Hace 2 horas</p>
+          <p className="font-bold text-primary drop-shadow-[0_0_8px_hsl(180_100%_50%)]">{userName}</p>
+          <p className="text-xs text-secondary">HACE 2 HORAS</p>
         </div>
       </div>
 
-      <div className="aspect-square overflow-hidden bg-muted">
-        <img src={image} alt={plantName} className="h-full w-full object-cover transition-transform duration-300 hover:scale-105" />
+      <div className="aspect-square overflow-hidden bg-muted border-y-2 border-primary/20 relative">
+        <img 
+          src={image} 
+          alt={plantName} 
+          className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
 
-      <div className="p-4 bg-lime-200">
+      <div className="p-4 bg-card/50 backdrop-blur">
         <div className="flex items-center justify-between mb-3">
           <div className="flex gap-2">
-            <Button variant="ghost" size="icon" className="hover:bg-accent" onClick={handleLike}>
-              <Heart className={`h-5 w-5 transition-colors ${isLiked ? "fill-accent text-accent" : "text-foreground"}`} />
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="hover:bg-accent/20 border border-accent/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(140_100%_50%)]" 
+              onClick={handleLike}
+            >
+              <Heart className={`h-5 w-5 transition-all duration-300 ${isLiked ? "fill-secondary text-secondary drop-shadow-[0_0_10px_hsl(320_100%_50%)]" : "text-accent"}`} />
             </Button>
-            <Button variant="ghost" size="icon" className="hover:bg-accent">
-              <MessageCircle className="h-5 w-5 text-foreground" />
+            <Button variant="ghost" size="icon" className="hover:bg-primary/20 border border-primary/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(180_100%_50%)]">
+              <MessageCircle className="h-5 w-5 text-primary" />
             </Button>
-            <Button variant="ghost" size="icon" className="hover:bg-accent">
-              <Share2 className="h-5 w-5 text-foreground" />
+            <Button variant="ghost" size="icon" className="hover:bg-tertiary/20 border border-tertiary/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(270_100%_60%)]">
+              <Share2 className="h-5 w-5 text-tertiary" />
             </Button>
           </div>
         </div>
 
-        <p className="text-sm font-semibold text-foreground mb-1">
-          {likes} me gusta
+        <p className="text-sm font-bold text-secondary mb-2 drop-shadow-[0_0_8px_hsl(320_100%_50%)]">
+          {likes} ME GUSTA
         </p>
 
         <div className="space-y-1">
           <p className="text-sm">
-            <span className="font-semibold text-foreground">{userName}</span>{" "}
-            <span className="text-foreground">{plantName}</span>
+            <span className="font-bold text-primary">{userName}</span>{" "}
+            <span className="text-accent font-medium">{plantName}</span>
           </p>
           <p className="text-sm text-muted-foreground">{description}</p>
         </div>
 
-        {comments > 0 && <button className="text-sm text-muted-foreground mt-2 hover:text-foreground transition-colors">
-            Ver los {comments} comentarios
+        {comments > 0 && <button className="text-sm text-tertiary mt-2 hover:text-secondary transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(270_100%_60%)]">
+            VER LOS {comments} COMENTARIOS
           </button>}
       </div>
     </Card>;
