@@ -31,7 +31,7 @@ const PlantCard = ({
     }
     setIsLiked(!isLiked);
   };
-  return <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg border-border bg-card">
+  return <Card className="overflow-hidden transition-all duration-300 hover:shadow-lg border-border bg-card rounded-none">
       <div className="p-4 flex items-center gap-3 border-b border-border">
         <Avatar className="h-10 w-10 border-2 border-primary/20">
           <AvatarFallback className="bg-secondary text-foreground font-medium">
