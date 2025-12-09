@@ -11,11 +11,11 @@ serve(async (req) => {
   }
 
   try {
-    const { imageUrl } = await req.json();
+    const { imageBase64 } = await req.json();
     
-    if (!imageUrl) {
+    if (!imageBase64) {
       return new Response(
-        JSON.stringify({ error: 'La URL de la imagen es requerida' }),
+        JSON.stringify({ error: 'La imagen es requerida' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -29,7 +29,7 @@ serve(async (req) => {
       );
     }
 
-    console.log('Generating description for image:', imageUrl);
+    console.log('Generating description for image (base64 length):', imageBase64.length);
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
@@ -58,7 +58,7 @@ Usa un tono amigable y cercano, como si fuera un post de red social.`
               {
                 type: 'image_url',
                 image_url: {
-                  url: imageUrl
+                  url: imageBase64
                 }
               }
             ]
