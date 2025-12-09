@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import PlantCard from "@/components/PlantCard";
+import CreatePostDialog from "@/components/CreatePostDialog";
 import { usePosts } from "@/hooks/usePosts";
+import { useAuth } from "@/hooks/useAuth";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Image mapping for demo data
@@ -25,12 +27,19 @@ const getInitials = (name: string | null) => {
 
 const Index = () => {
   const { data: posts, isLoading, error } = usePosts();
+  const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
 
       <main className="container mx-auto px-4 py-8">
+        {user && (
+          <div className="flex justify-end mb-6 max-w-7xl mx-auto">
+            <CreatePostDialog />
+          </div>
+        )}
+
         {isLoading && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
             {[...Array(6)].map((_, i) => (
