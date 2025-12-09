@@ -9,6 +9,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
+import { z } from "zod";
 
 interface AuthDialogProps {
   open: boolean;
@@ -16,14 +19,75 @@ interface AuthDialogProps {
   mode: "login" | "signup";
 }
 
+const emailSchema = z.string().email("Email inválido");
+const passwordSchema = z.string().min(6, "La contraseña debe tener al menos 6 caracteres");
+
 export const AuthDialog = ({ open, onOpenChange, mode }: AuthDialogProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { signIn, signUp } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setUsername("");
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // No implementation - UI only
+    
+    try {
+      emailSchema.parse(email);
+      passwordSchema.parse(password);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        toast.error(err.errors[0].message);
+        return;
+      }
+    }
+
+    if (mode === "signup" && password !== confirmPassword) {
+      toast.error("Las contraseñas no coinciden");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      if (mode === "login") {
+        const { error } = await signIn(email, password);
+        if (error) {
+          if (error.message.includes("Invalid login credentials")) {
+            toast.error("Credenciales inválidas");
+          } else {
+            toast.error(error.message);
+          }
+        } else {
+          toast.success("¡Bienvenido de vuelta!");
+          resetForm();
+          onOpenChange(false);
+        }
+      } else {
+        const { error } = await signUp(email, password, username);
+        if (error) {
+          if (error.message.includes("User already registered")) {
+            toast.error("Este email ya está registrado");
+          } else {
+            toast.error(error.message);
+          }
+        } else {
+          toast.success("¡Cuenta creada exitosamente!");
+          resetForm();
+          onOpenChange(false);
+        }
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -40,6 +104,21 @@ export const AuthDialog = ({ open, onOpenChange, mode }: AuthDialogProps) => {
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+          {mode === "signup" && (
+            <div className="space-y-2">
+              <Label htmlFor="username" className="text-foreground">
+                Nombre de usuario
+              </Label>
+              <Input
+                id="username"
+                type="text"
+                placeholder="tu_nombre"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="bg-background/50 border-primary/30 focus:border-accent"
+              />
+            </div>
+          )}
           <div className="space-y-2">
             <Label htmlFor="email" className="text-foreground">
               Email
@@ -51,6 +130,7 @@ export const AuthDialog = ({ open, onOpenChange, mode }: AuthDialogProps) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="bg-background/50 border-primary/30 focus:border-accent"
+              required
             />
           </div>
           <div className="space-y-2">
@@ -64,6 +144,7 @@ export const AuthDialog = ({ open, onOpenChange, mode }: AuthDialogProps) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="bg-background/50 border-primary/30 focus:border-accent"
+              required
             />
           </div>
           {mode === "signup" && (
@@ -78,14 +159,21 @@ export const AuthDialog = ({ open, onOpenChange, mode }: AuthDialogProps) => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="bg-background/50 border-primary/30 focus:border-accent"
+                required
               />
             </div>
           )}
           <Button
             type="submit"
+            disabled={isLoading}
             className="w-full bg-primary/20 text-accent border-2 border-accent hover:bg-accent/20 neon-glow"
           >
-            {mode === "login" ? "Iniciar Sesión" : "Crear Cuenta"}
+            {isLoading 
+              ? "Cargando..." 
+              : mode === "login" 
+                ? "Iniciar Sesión" 
+                : "Crear Cuenta"
+            }
           </Button>
         </form>
       </DialogContent>
