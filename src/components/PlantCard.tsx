@@ -66,7 +66,7 @@ const PlantCard = ({
           </div>
         </div>
 
-        <div className="space-y-1">
+        <div className="">
           <p className="text-sm">
             <span className="text-accent font-medium">{plantName}</span>{" "}
             <span className="font-bold text-primary">{userName}</span>
