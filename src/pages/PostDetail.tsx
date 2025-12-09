@@ -1,148 +1,42 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Heart, MessageCircle, Share2 } from "lucide-react";
+import { ArrowLeft, MessageCircle, Share2, Bomb } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Header from "@/components/Header";
+import { usePost } from "@/hooks/usePosts";
+import { Skeleton } from "@/components/ui/skeleton";
+import { formatDistanceToNow } from "date-fns";
+import { es } from "date-fns/locale";
 
-// Mock data - en el futuro vendrá de una API
-const mockPosts = {
-  "1": {
-    image: "/src/assets/plant1.jpg",
-    plantName: "Monstera deliciosa",
-    description:
-      "Mi monstera está creciendo increíblemente bien este verano. Las hojas nuevas son enormes y tienen unas fenestras perfectas. Le he dado mucho amor y luz indirecta.",
-    userName: "PlantLover23",
-    userInitials: "PL",
-    likes: 234,
-    comments: [
-      {
-        id: 1,
-        userName: "GreenThumb",
-        userInitials: "GT",
-        text: "¡Qué hermosa! ¿Qué fertilizante usas?",
-        time: "hace 1 hora",
-      },
-      {
-        id: 2,
-        userName: "BotanicaFan",
-        userInitials: "BF",
-        text: "Las fenestras son perfectas 😍",
-        time: "hace 2 horas",
-      },
-      {
-        id: 3,
-        userName: "JungleVibes",
-        userInitials: "JV",
-        text: "Me encanta cómo la tienes ubicada",
-        time: "hace 3 horas",
-      },
-    ],
-  },
-  "2": {
-    image: "/src/assets/plant2.jpg",
-    plantName: "Pothos dorado",
-    description:
-      "Este pothos ha crecido más de 2 metros en solo 6 meses. Es increíble lo rápido que crece con el cuidado adecuado.",
-    userName: "GreenThumb",
-    userInitials: "GT",
-    likes: 189,
-    comments: [
-      {
-        id: 1,
-        userName: "PlantLover23",
-        userInitials: "PL",
-        text: "¡Impresionante! ¿Lo tienes en agua o tierra?",
-        time: "hace 30 min",
-      },
-      {
-        id: 2,
-        userName: "UrbanJungle",
-        userInitials: "UJ",
-        text: "Necesito consejos, el mío no crece tanto",
-        time: "hace 1 hora",
-      },
-    ],
-  },
-  "3": {
-    image: "/src/assets/plant3.jpg",
-    plantName: "Ficus lyrata",
-    description:
-      "Mi ficus finalmente se está adaptando a su nueva ubicación. Las hojas nuevas son un buen indicador de que está feliz.",
-    userName: "UrbanJungle",
-    userInitials: "UJ",
-    likes: 156,
-    comments: [
-      {
-        id: 1,
-        userName: "BotanicaFan",
-        userInitials: "BF",
-        text: "Los ficus son tan temperamentales, felicidades",
-        time: "hace 2 horas",
-      },
-    ],
-  },
-  "4": {
-    image: "/src/assets/plant4.jpg",
-    plantName: "Suculenta Echeveria",
-    description:
-      "Esta echeveria está comenzando a florecer. Las flores naranjas son preciosas y contrastan perfectamente con las hojas azuladas.",
-    userName: "SucculentQueen",
-    userInitials: "SQ",
-    likes: 201,
-    comments: [
-      {
-        id: 1,
-        userName: "DesertVibes",
-        userInitials: "DV",
-        text: "Las flores son espectaculares",
-        time: "hace 4 horas",
-      },
-      {
-        id: 2,
-        userName: "CactusLover",
-        userInitials: "CL",
-        text: "¿Cuánto tiempo tardó en florecer?",
-        time: "hace 5 horas",
-      },
-    ],
-  },
-  "5": {
-    image: "/src/assets/plant5.jpg",
-    plantName: "Calathea ornata",
-    description:
-      "Las calatheas son mis favoritas por sus patrones de hojas únicos. Esta es mi última adquisición y estoy enamorada.",
-    userName: "TropicalVibes",
-    userInitials: "TV",
-    likes: 178,
-    comments: [],
-  },
-  "6": {
-    image: "/src/assets/plant6.jpg",
-    plantName: "Pilea peperomioides",
-    description: "Mi pilea está produciendo muchos hijuelos. Si alguien está interesado en intercambios, ¡avísenme!",
-    userName: "PlantParent",
-    userInitials: "PP",
-    likes: 143,
-    comments: [
-      {
-        id: 1,
-        userName: "SwapPlants",
-        userInitials: "SP",
-        text: "¡Me interesa! Te escribo por mensaje",
-        time: "hace 20 min",
-      },
-    ],
-  },
+const getInitials = (name: string | null) => {
+  if (!name) return "??";
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 };
+
+const formatTime = (dateString: string) => {
+  return formatDistanceToNow(new Date(dateString), { addSuffix: true, locale: es });
+};
+
 const PostDetail = () => {
-  const { id } = useParams<{
-    id: string;
-  }>();
-  const post = id ? mockPosts[id as keyof typeof mockPosts] : null;
+  const { id } = useParams<{ id: string }>();
+  const { data: post, isLoading, error } = usePost(id);
   const [isLiked, setIsLiked] = useState(false);
-  const [likes, setLikes] = useState(post?.likes || 0);
+  const [likes, setLikes] = useState(0);
+
+  // Update likes when post loads
+  useState(() => {
+    if (post) {
+      setLikes(post.likes_count);
+    }
+  });
+
   const handleLike = () => {
     if (isLiked) {
       setLikes(likes - 1);
@@ -151,16 +45,38 @@ const PostDetail = () => {
     }
     setIsLiked(!isLiked);
   };
-  if (!post) {
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="container mx-auto px-4 py-8 max-w-3xl">
+          <Skeleton className="h-8 w-32 mb-6" />
+          <Skeleton className="aspect-video w-full" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !post) {
     return (
       <div className="min-h-screen bg-background">
         <Header />
         <div className="container mx-auto px-4 py-8">
           <p className="text-center text-muted-foreground">Post no encontrado</p>
+          <Link
+            to="/"
+            className="block text-center mt-4 text-primary hover:text-accent transition-colors"
+          >
+            Volver al feed
+          </Link>
         </div>
       </div>
     );
   }
+
+  const displayLikes = likes || post.likes_count;
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -178,17 +94,19 @@ const PostDetail = () => {
           <div className="p-4 flex items-center gap-3 border-b-2 border-primary/30 bg-muted/30">
             <Avatar className="h-10 w-10 border-2 border-primary animate-glow-pulse">
               <AvatarFallback className="bg-tertiary text-tertiary-foreground font-bold">
-                {post.userInitials}
+                {getInitials(post.profile?.username)}
               </AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-bold text-primary drop-shadow-[0_0_8px_hsl(180_100%_50%)]">{post.userName}</p>
-              <p className="text-xs text-secondary">HACE 2 HORAS</p>
+              <p className="font-bold text-primary drop-shadow-[0_0_8px_hsl(180_100%_50%)]">
+                {post.profile?.username || "Usuario"}
+              </p>
+              <p className="text-xs text-secondary">{formatTime(post.created_at).toUpperCase()}</p>
             </div>
           </div>
 
           <div className="overflow-hidden bg-muted border-y-2 border-primary/20">
-            <img src={post.image} alt={post.plantName} className="h-50 w-50 object-cover" />
+            <img src={post.image_url} alt={post.plant_name} className="h-50 w-50 object-cover" />
           </div>
 
           <div className="p-4 bg-card/50 backdrop-blur">
@@ -200,7 +118,7 @@ const PostDetail = () => {
                   className="hover:bg-accent/20 border border-accent/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(140_100%_50%)]"
                   onClick={handleLike}
                 >
-                  <Heart
+                  <Bomb
                     className={`h-5 w-5 transition-all duration-300 ${isLiked ? "fill-secondary text-secondary drop-shadow-[0_0_10px_hsl(320_100%_50%)]" : "text-accent"}`}
                   />
                 </Button>
@@ -222,13 +140,13 @@ const PostDetail = () => {
             </div>
 
             <p className="text-sm font-bold text-secondary mb-2 drop-shadow-[0_0_8px_hsl(320_100%_50%)]">
-              {likes} ME GUSTA
+              {displayLikes} ME GUSTA
             </p>
 
             <div className="space-y-1 mb-6">
               <p className="text-sm">
-                <span className="font-bold text-primary">{post.userName}</span>{" "}
-                <span className="text-accent font-medium">{post.plantName}</span>
+                <span className="font-bold text-primary">{post.profile?.username || "Usuario"}</span>{" "}
+                <span className="text-accent font-medium">{post.plant_name}</span>
               </p>
               <p className="text-sm text-muted-foreground">{post.description}</p>
             </div>
@@ -236,10 +154,10 @@ const PostDetail = () => {
             {/* Comments Section */}
             <div className="border-t-2 border-primary/20 pt-4">
               <h3 className="text-sm font-bold text-secondary mb-4 drop-shadow-[0_0_8px_hsl(320_100%_50%)]">
-                {post.comments.length} COMENTARIOS
+                {post.comments?.length || 0} COMENTARIOS
               </h3>
 
-              {post.comments.length === 0 ? (
+              {(!post.comments || post.comments.length === 0) ? (
                 <p className="text-sm text-muted-foreground text-center py-4">
                   No hay comentarios aún. ¡Sé el primero en comentar!
                 </p>
@@ -249,15 +167,19 @@ const PostDetail = () => {
                     <div key={comment.id} className="flex gap-3">
                       <Avatar className="h-8 w-8 border border-primary/50">
                         <AvatarFallback className="bg-tertiary/50 text-tertiary-foreground text-xs font-bold">
-                          {comment.userInitials}
+                          {getInitials(comment.profile?.username)}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
                         <p className="text-sm">
-                          <span className="font-bold text-primary">{comment.userName}</span>{" "}
-                          <span className="text-muted-foreground">{comment.text}</span>
+                          <span className="font-bold text-primary">
+                            {comment.profile?.username || "Usuario"}
+                          </span>{" "}
+                          <span className="text-muted-foreground">{comment.content}</span>
                         </p>
-                        <p className="text-xs text-secondary mt-1">{comment.time}</p>
+                        <p className="text-xs text-secondary mt-1">
+                          {formatTime(comment.created_at)}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -270,4 +192,5 @@ const PostDetail = () => {
     </div>
   );
 };
+
 export default PostDetail;
