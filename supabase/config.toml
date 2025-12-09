@@ -1,1 +1,4 @@
 project_id = "icgpsaexogelghlrcyrf"
+
+[functions.generate-plant-description]
+verify_jwt = false
