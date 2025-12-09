@@ -18,7 +18,7 @@ const Header = () => {
         <div className="flex items-center gap-3 animate-slide-up">
           <Button
             variant="outline"
-            className="text-foreground hover:bg-primary/20 hover:text-accent hover:border-accent border-primary/30 neon-text transition-colors"
+            className="text-red-500 hover:bg-primary/20 hover:text-accent hover:border-accent border-primary/30 neon-text transition-colors"
             onClick={() => setAuthMode("login")}
           >
             Login
