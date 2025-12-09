@@ -11,7 +11,7 @@ const Header = () => {
       <div className="container flex h-20 items-center justify-between px-4">
         <div className="flex items-center gap-3 animate-slide-up">
           <Leaf className="h-8 w-8 text-accent animate-neon-pulse drop-shadow-[0_0_15px_hsl(140_100%_50%)]" />
-          <Link to="/" className="text-3xl font-bold text-primary-foreground bg-accent px-3 py-1 neon-text tracking-wider uppercase">
+          <Link to="/" className="text-3xl font-bold text-primary neon-text tracking-wider uppercase animate-flicker">
             Plantify
           </Link>
         </div>
