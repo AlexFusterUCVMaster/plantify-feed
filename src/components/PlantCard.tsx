@@ -54,11 +54,7 @@ const PlantCard = ({
               size="icon"
               className="hover:bg-accent/20 border border-accent/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(140_100%_50%)]"
               onClick={handleLike}
-            >
-              <Heart
-                className={`h-5 w-5 transition-all duration-300 ${isLiked ? "fill-secondary text-secondary drop-shadow-[0_0_10px_hsl(320_100%_50%)]" : "text-accent"}`}
-              />
-            </Button>
+            ></Button>
             <Button
               variant="ghost"
               size="icon"
@@ -75,10 +71,6 @@ const PlantCard = ({
             </Button>
           </div>
         </div>
-
-        <p className="text-sm font-bold text-secondary mb-2 drop-shadow-[0_0_8px_hsl(320_100%_50%)]">
-          {likes} ME GUSTA
-        </p>
 
         <div className="space-y-1">
           <p className="text-sm">
