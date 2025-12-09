@@ -9,7 +9,8 @@ import { usePost } from "@/hooks/usePosts";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
-
+import CommentForm from "@/components/CommentForm";
+import { useQueryClient } from "@tanstack/react-query";
 const getInitials = (name: string | null) => {
   if (!name) return "??";
   return name
@@ -26,9 +27,14 @@ const formatTime = (dateString: string) => {
 
 const PostDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const queryClient = useQueryClient();
   const { data: post, isLoading, error } = usePost(id);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(0);
+
+  const handleCommentAdded = () => {
+    queryClient.invalidateQueries({ queryKey: ["post", id] });
+  };
 
   // Update likes when post loads
   useState(() => {
@@ -185,6 +191,8 @@ const PostDetail = () => {
                   ))}
                 </div>
               )}
+
+              <CommentForm postId={id!} onCommentAdded={handleCommentAdded} />
             </div>
           </div>
         </Card>
