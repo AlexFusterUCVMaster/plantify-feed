@@ -22,7 +22,7 @@ const PlantCard = ({
   userName,
   userInitials,
   likes: initialLikes,
-  comments,
+  comments
 }: PlantCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(initialLikes);
@@ -34,11 +34,12 @@ const PlantCard = ({
     }
     setIsLiked(!isLiked);
   };
-  return (
-    <Card className="transition-all duration-500 border-2 border-primary bg-card rounded-none neon-border animate-slide-up group">
+  return <Card className="transition-all duration-500 border-2 border-primary bg-card rounded-none neon-border animate-slide-up group">
       <div className="p-4 flex items-center gap-3 border-b-2 border-primary/30 bg-muted/30">
         <Avatar className="h-10 w-10 border-2 border-primary animate-glow-pulse">
-          <AvatarFallback className="bg-tertiary text-tertiary-foreground font-bold">{userInitials}</AvatarFallback>
+          <AvatarFallback className="bg-tertiary text-tertiary-foreground font-bold">
+            {userInitials}
+          </AvatarFallback>
         </Avatar>
         <div>
           <p className="font-bold text-primary drop-shadow-[0_0_8px_hsl(180_100%_50%)]">{userName}</p>
@@ -46,33 +47,45 @@ const PlantCard = ({
         </div>
       </div>
 
+      <div className="aspect-square overflow-hidden bg-muted border-y-2 border-primary/20 relative">
+        <img 
+          src={image} 
+          alt={plantName} 
+          className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110" 
+        />
+      </div>
+
       <div className="p-4 bg-card/50 backdrop-blur">
         <div className="flex items-center justify-between mb-3">
           <div className="flex gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-primary/20 border border-primary/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(180_100%_50%)]"
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="hover:bg-accent/20 border border-accent/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(140_100%_50%)]" 
+              onClick={handleLike}
             >
+              <Heart className={`h-5 w-5 transition-all duration-300 ${isLiked ? "fill-secondary text-secondary drop-shadow-[0_0_10px_hsl(320_100%_50%)]" : "text-accent"}`} />
+            </Button>
+            <Button variant="ghost" size="icon" className="hover:bg-primary/20 border border-primary/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(180_100%_50%)]">
               <MessageCircle className="h-5 w-5 text-primary" />
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="hover:bg-tertiary/20 border border-tertiary/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(270_100%_60%)]"
-            >
+            <Button variant="ghost" size="icon" className="hover:bg-tertiary/20 border border-tertiary/30 transition-all duration-300 hover:shadow-[0_0_15px_hsl(270_100%_60%)]">
               <Share2 className="h-5 w-5 text-tertiary" />
             </Button>
           </div>
         </div>
 
-        <div className="">
+        <p className="text-sm font-bold text-secondary mb-2 drop-shadow-[0_0_8px_hsl(320_100%_50%)]">
+          {likes} ME GUSTA
+        </p>
+
+        <div className="space-y-1">
           <p className="text-sm">
-            <span className="text-accent font-medium">{plantName}</span>{" "}
-            <span className="font-bold text-primary">{userName}</span>
+            <span className="font-bold text-primary">{userName}</span>{" "}
+            <span className="text-accent font-medium">{plantName}</span>
           </p>
-          <p className="text-sm text-destructive">{description}</p>
-          <Link
+          <p className="text-sm text-muted-foreground">{description}</p>
+          <Link 
             to={`/post/${id}`}
             className="text-sm text-primary mt-1 hover:text-accent transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(180_100%_50%)] inline-block"
           >
@@ -80,23 +93,13 @@ const PlantCard = ({
           </Link>
         </div>
 
-        {comments > 0 && (
-          <Link
-            to={`/post/${id}`}
-            className="text-sm text-tertiary mt-2 hover:text-secondary transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(270_100%_60%)] inline-block"
-          >
+        {comments > 0 && <Link 
+          to={`/post/${id}`}
+          className="text-sm text-tertiary mt-2 hover:text-secondary transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(270_100%_60%)] inline-block"
+        >
             VER LOS {comments} COMENTARIOS
-          </Link>
-        )}
+          </Link>}
       </div>
-      <div className="aspect-square overflow-hidden bg-muted border-y-2 border-primary/20 relative">
-        <img
-          src={image}
-          alt={plantName}
-          className="h-50 w-50 object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
-        />
-      </div>
-    </Card>
-  );
+    </Card>;
 };
 export default PlantCard;

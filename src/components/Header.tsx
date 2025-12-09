@@ -5,8 +5,7 @@ import { useState } from "react";
 
 const Header = () => {
   const [authMode, setAuthMode] = useState<"login" | "signup" | null>(null);
-  return (
-    <header className="sticky top-0 z-50 w-full border-b-2 border-primary bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 neon-glow">
+  return <header className="sticky top-0 z-50 w-full border-b-2 border-primary bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80 neon-glow">
       <div className="container flex h-20 items-center justify-between px-4">
         <div className="flex items-center gap-3 animate-slide-up">
           <Leaf className="h-8 w-8 text-accent animate-neon-pulse drop-shadow-[0_0_15px_hsl(140_100%_50%)]" />
@@ -15,14 +14,14 @@ const Header = () => {
           </h1>
         </div>
         <div className="flex items-center gap-3 animate-slide-up">
-          <Button
-            variant="outline"
+          <Button 
+            variant="outline" 
             className="text-foreground hover:bg-primary/20 hover:text-accent hover:border-accent border-primary/30 neon-text transition-colors"
             onClick={() => setAuthMode("login")}
           >
             Login
           </Button>
-          <Button
+          <Button 
             className="bg-primary/20 text-accent border-2 border-accent hover:bg-accent/20 neon-glow"
             onClick={() => setAuthMode("signup")}
           >
@@ -30,12 +29,11 @@ const Header = () => {
           </Button>
         </div>
       </div>
-      <AuthDialog
-        open={authMode !== null}
+      <AuthDialog 
+        open={authMode !== null} 
         onOpenChange={(open) => !open && setAuthMode(null)}
         mode={authMode || "login"}
       />
-    </header>
-  );
+    </header>;
 };
 export default Header;
