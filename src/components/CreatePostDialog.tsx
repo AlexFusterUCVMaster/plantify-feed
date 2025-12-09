@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Plus, Upload, X, Loader2 } from "lucide-react";
+import { Plus, Upload, X, Loader2, Sparkles } from "lucide-react";
 
 const postSchema = z.object({
   plantName: z.string().min(1, "El nombre de la planta es requerido").max(100),
@@ -34,6 +34,7 @@ const CreatePostDialog = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGeneratingDescription, setIsGeneratingDescription] = useState(false);
   const [errors, setErrors] = useState<{ plantName?: string; image?: string }>({});
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +68,31 @@ const CreatePostDialog = () => {
     setImageFile(null);
     setImagePreview(null);
     setErrors({});
+  };
+
+  const generateDescription = async (imageUrl: string) => {
+    setIsGeneratingDescription(true);
+    try {
+      const response = await supabase.functions.invoke('generate-plant-description', {
+        body: { imageUrl }
+      });
+      
+      if (response.error) throw new Error(response.error.message);
+      
+      if (response.data?.description) {
+        setDescription(response.data.description);
+        toast({ title: "Descripción generada con IA" });
+      }
+    } catch (error) {
+      console.error('Error generating description:', error);
+      toast({
+        title: "No se pudo generar la descripción",
+        description: "Puedes escribirla manualmente",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingDescription(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -171,7 +197,31 @@ const CreatePostDialog = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Descripción</Label>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="description">Descripción</Label>
+              {imagePreview && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 text-xs gap-1 text-primary hover:text-primary"
+                  onClick={() => generateDescription(imagePreview)}
+                  disabled={isGeneratingDescription}
+                >
+                  {isGeneratingDescription ? (
+                    <>
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                      Generando...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-3 w-3" />
+                      Generar con IA
+                    </>
+                  )}
+                </Button>
+              )}
+            </div>
             <Textarea
               id="description"
               value={description}
