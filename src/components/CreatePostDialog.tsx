@@ -70,11 +70,22 @@ const CreatePostDialog = () => {
     setErrors({});
   };
 
-  const generateDescription = async (imageUrl: string) => {
+  const generateDescription = async () => {
+    if (!imageFile) return;
+    
     setIsGeneratingDescription(true);
     try {
+      // Convert image to base64
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(imageFile);
+      });
+      const base64Image = await base64Promise;
+      
       const response = await supabase.functions.invoke('generate-plant-description', {
-        body: { imageUrl }
+        body: { imageBase64: base64Image }
       });
       
       if (response.error) throw new Error(response.error.message);
@@ -205,7 +216,7 @@ const CreatePostDialog = () => {
                   variant="ghost"
                   size="sm"
                   className="h-7 text-xs gap-1 text-primary hover:text-primary"
-                  onClick={() => generateDescription(imagePreview)}
+                  onClick={() => generateDescription()}
                   disabled={isGeneratingDescription}
                 >
                   {isGeneratingDescription ? (
