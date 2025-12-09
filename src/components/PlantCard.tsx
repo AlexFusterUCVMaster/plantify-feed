@@ -93,7 +93,7 @@ const PlantCard = ({
         <img
           src={image}
           alt={plantName}
-          className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
+          className="h-50 w-50 object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
         />
       </div>
     </Card>
