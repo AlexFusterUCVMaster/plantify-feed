@@ -90,8 +90,8 @@ const PlantCard = ({
 
         <div className="space-y-1">
           <p className="text-sm">
-            <span className="text-accent font-medium">{plantName}</span>
-            <span className="font-bold text-primary">{userName}</span>{" "}
+            <span className="text-accent font-medium">{plantName}</span>{" "}
+            <span className="font-bold text-primary">{userName}</span>
           </p>
           <p className="text-sm text-muted-foreground">{description}</p>
           <Link
