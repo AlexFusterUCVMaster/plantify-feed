@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, MessageCircle, Share2, Bomb } from "lucide-react";
+import { ArrowLeft, MessageCircle, Share2, Bomb, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,9 @@ import { formatDistanceToNow } from "date-fns";
 import { es } from "date-fns/locale";
 import CommentForm from "@/components/CommentForm";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 const getInitials = (name: string | null) => {
   if (!name) return "??";
   return name
@@ -28,12 +31,37 @@ const formatTime = (dateString: string) => {
 const PostDetail = () => {
   const { id } = useParams<{ id: string }>();
   const queryClient = useQueryClient();
+  const { user } = useAuth();
   const { data: post, isLoading, error } = usePost(id);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(0);
 
   const handleCommentAdded = () => {
     queryClient.invalidateQueries({ queryKey: ["post", id] });
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    try {
+      const { error } = await supabase.from("comments").delete().eq("id", commentId);
+      if (error) throw error;
+      
+      queryClient.invalidateQueries({ queryKey: ["post", id] });
+      toast({
+        title: "Comentario eliminado",
+        description: "El comentario se ha eliminado correctamente",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "No se pudo eliminar el comentario",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const canDeleteComment = (commentUserId: string) => {
+    if (!user) return false;
+    return user.id === commentUserId || user.id === post?.user_id;
   };
 
   // Update likes when post loads
@@ -177,12 +205,24 @@ const PostDetail = () => {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <p className="text-sm">
-                          <span className="font-bold text-primary">
-                            {comment.profile?.username || "Usuario"}
-                          </span>{" "}
-                          <span className="text-muted-foreground">{comment.content}</span>
-                        </p>
+                        <div className="flex items-start justify-between gap-2">
+                          <p className="text-sm">
+                            <span className="font-bold text-primary">
+                              {comment.profile?.username || "Usuario"}
+                            </span>{" "}
+                            <span className="text-muted-foreground">{comment.content}</span>
+                          </p>
+                          {canDeleteComment(comment.user_id) && (
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-6 w-6 text-destructive/70 hover:text-destructive hover:bg-destructive/10"
+                              onClick={() => handleDeleteComment(comment.id)}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          )}
+                        </div>
                         <p className="text-xs text-secondary mt-1">
                           {formatTime(comment.created_at)}
                         </p>
