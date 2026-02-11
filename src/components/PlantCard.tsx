@@ -98,7 +98,7 @@ const PlantCard = ({
             to={`/post/${id}`}
             className="text-sm text-primary mt-1 hover:text-accent transition-colors font-medium hover:drop-shadow-[0_0_8px_hsl(180_100%_50%)] inline-block"
           >
-            ver
+            VER
           </Link>
         </div>
 
